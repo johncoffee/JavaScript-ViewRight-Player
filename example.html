@@ -172,7 +172,7 @@
 		$('#playback-indicator > DIV > DIV').width(player.getPlaybackPercentage() + '%');
 	};
 
-	player.init('#verimatrix-player');
+	player.init(document.getElementById('verimatrix-player'));
 
 	if (!player.isProvisioned()) {
 		window.location.href = 'http://hls.estpak.ee/vm/order.php?id=' + player.getClientId();

@@ -219,23 +219,19 @@ window.ViewRightPlayer = (function() {
 		this.log('Initializing player');
 
 		var self = this,
-			wrap = $(container),
-			width = wrap.innerWidth(),
-			height = wrap.innerHeight();
+			width = container.clientWidth,
+			height = container.clientHeight;
 
 		if (this._ie) {
-			wrap.append(
-				'<object id="view-right-control" classid="CLSID:059BFDA3-0AAB-419F-9F69-AF9BBE3A4668" width="' +
-				width + '" height="' + height + '"></object>'
-			);
+			container.innerHTML = '<object id="view-right-control" classid="CLSID:059BFDA3-0AAB-419F-9F69-AF9BBE3A4668"' +
+			' width="' + width + '" height="' + height + '"></object>';
 		} else {
-			wrap.append(
-				'<object id="view-right-control" type="application/x-viewright-m3u8" width="' + width +
-				'" height="' + height + '"></object>'
-			);
+			container.innerHTML = '<object id="view-right-control" type="application/x-viewright-m3u8"' +
+			' width="' + width + '" height="' + height + '"></object>';
 		}
 
-		this._player = $('#view-right-control')[0];
+		this._container = container; // save reference for destroying
+		this._player = document.getElementById('view-right-control');
 
 		this._stateMonitorInterval = window.setInterval(function() {
 			self._monitorState();
@@ -278,8 +274,8 @@ window.ViewRightPlayer = (function() {
 			'Destroying played failed'
 		);
 
-		$(this._player).remove();
-
+		this._container.innerHTML = "";
+		
 		this._initialized = false;
 
 		return result;
