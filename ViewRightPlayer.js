@@ -20,6 +20,7 @@ window.ViewRightPlayer = (function() {
 		this._playbackMonitorInterval = null;
 		this._lastState = null;
 		this._lastPosition = 0;
+		this._debugLevel = (console && console.debug) ? "debug" : "log"; // we'd like to use console.debug if supported, otherwise we'll use console.log.
 	};
 
 	/**
@@ -102,7 +103,7 @@ window.ViewRightPlayer = (function() {
 			return;
 		}
 
-		window.console.log.apply(window.console, arguments);
+		window.console[this._debugLevel].apply(window.console, arguments);
 	};
 
 	/**
@@ -956,5 +957,18 @@ window.ViewRightPlayer = (function() {
 		this._lastPosition = currentPosition;
 	};
 
+
+	/**
+	 * Registers 'boot server'
+	 *
+	 * @method registerBootServer
+	 * @param {String} bootServerURL
+	 * @param {String} bootServerID
+	 * @param {Boolean} boolVal 
+	 */
+	ViewRightPlayer.prototype.registerBootServer = function(bootServerURL, bootServerID, boolVal) {
+		this._player.RegisterBootServer(bootServerURL, bootServerID, boolVal);
+	};
+	
 	return ViewRightPlayer;
 })();
