@@ -224,14 +224,13 @@ window.ViewRightPlayer = (function() {
 			height = container.clientHeight;
 
 		if (this._ie) {
-			container.innerHTML = '<object id="view-right-control" classid="CLSID:059BFDA3-0AAB-419F-9F69-AF9BBE3A4668"' +
+			container.innerHTML += '<object id="view-right-control" classid="CLSID:059BFDA3-0AAB-419F-9F69-AF9BBE3A4668"' +
 			' width="' + width + '" height="' + height + '"></object>';
 		} else {
-			container.innerHTML = '<object id="view-right-control" type="application/x-viewright-m3u8"' +
+			container.innerHTML += '<object id="view-right-control" type="application/x-viewright-m3u8"' +
 			' width="' + width + '" height="' + height + '"></object>';
 		}
 
-		this._container = container; // save reference for destroying
 		this._player = document.getElementById('view-right-control');
 
 		this._stateMonitorInterval = window.setInterval(function() {
@@ -275,7 +274,8 @@ window.ViewRightPlayer = (function() {
 			'Destroying played failed'
 		);
 
-		this._container.innerHTML = "";
+		var objectNode = document.getElementById("view-right-control");
+		objectNode.parentNode.removeChild(objectNode);
 		
 		this._initialized = false;
 
