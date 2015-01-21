@@ -119,7 +119,7 @@ window.ViewRightPlayer = (function() {
 	 *
 	 * @method log
 	 */
-	ViewRightPlayer.prototype.error = function() {
+	ViewRightPlayer.prototype.error = function(arg1, arg2, arg3) {
         if (typeof(window.console) === 'object') {
             if (typeof(window.console.apply) === "undefined") {
                 // we're probably in IE 9
