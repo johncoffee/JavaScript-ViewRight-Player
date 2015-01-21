@@ -98,12 +98,16 @@ window.ViewRightPlayer = (function() {
 	 *
 	 * @method log
 	 */
-	ViewRightPlayer.prototype.log = function() {
-		if (typeof(window.console) !== 'object') {
-			return;
-		}
-
-		window.console[this._debugLevel].apply(window.console, arguments);
+	ViewRightPlayer.prototype.log = function(arg1, arg2, arg3) {
+		if (typeof(window.console) === 'object') {
+            if (typeof(window.console.apply) === "undefined") {
+                // we're probably in IE 9
+                console.log(arg1, arg2, arg3);
+            }
+            else {
+                window.console[this._debugLevel].apply(window.console, arguments);
+            }
+        }
 	};
 
 	/**
@@ -116,11 +120,15 @@ window.ViewRightPlayer = (function() {
 	 * @method log
 	 */
 	ViewRightPlayer.prototype.error = function() {
-		if (typeof(window.console) !== 'object') {
-			return;
-		}
-
-		window.console.error.apply(window.console, arguments);
+        if (typeof(window.console) === 'object') {
+            if (typeof(window.console.apply) === "undefined") {
+                // we're probably in IE 9
+                console.log(arg1, arg2, arg3);
+            }
+            else {
+                window.console.error.apply(window.console, arguments);
+            }
+        }
 	};
 
 	/**
