@@ -98,11 +98,11 @@ window.ViewRightPlayer = (function() {
 	 *
 	 * @method log
 	 */
-	ViewRightPlayer.prototype.log = function(arg1, arg2, arg3) {
+	ViewRightPlayer.prototype.log = function(arg1) {
 		if (typeof(window.console) === 'object') {
-            if (typeof(window.console.apply) === "undefined") {
+            if (typeof(window.console.apply) !== "function") {
                 // we're probably in IE 9
-                console.log(arg1, arg2, arg3);
+                console.log(arg1);
             }
             else {
                 window.console[this._debugLevel].apply(window.console, arguments);
@@ -119,11 +119,11 @@ window.ViewRightPlayer = (function() {
 	 *
 	 * @method log
 	 */
-	ViewRightPlayer.prototype.error = function(arg1, arg2, arg3) {
+	ViewRightPlayer.prototype.error = function(arg1) {
         if (typeof(window.console) === 'object') {
-            if (typeof(window.console.apply) === "undefined") {
+            if (typeof(window.console.apply) !== "function") {
                 // we're probably in IE 9
-                console.log(arg1, arg2, arg3);
+                console.log(arg1);
             }
             else {
                 window.console.error.apply(window.console, arguments);
