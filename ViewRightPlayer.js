@@ -217,44 +217,60 @@ window.ViewRightPlayer = (function() {
 		return this._lastOpenedUrl;
 	};
 
-	/**
-	 * Initializes the ViewRightPlayer.
-	 *
-	 * @method init
-	 * @param {String|DOMElement} container Player container element or selector
-	 * @return {Player} Self
-	 */
-	ViewRightPlayer.prototype.init = function(container) {
-		this.log('Initializing player');
+    /**
+     * Initializes the ViewRightPlayer.
+     *
+     * @method init
+     * @param {DOMElement} container Player container element or selector
+     * @return {Player} Self
+     */
+    ViewRightPlayer.prototype.init = function(container) {
+        this.log('Initializing player');
 
-		var self = this,
-			width = container.clientWidth,
-			height = container.clientHeight;
+        this.appendTemplate(container);
+        this._player = document.getElementById(this._id);
 
-		if (this._ie) {
-			container.innerHTML += '<object id="view-right-control" classid="CLSID:059BFDA3-0AAB-419F-9F69-AF9BBE3A4668"' +
-			' width="' + width + '" height="' + height + '"></object>';
-		} else {
-			container.innerHTML += '<object id="view-right-control" type="application/x-viewright-m3u8"' +
-			' width="' + width + '" height="' + height + '"></object>';
-		}
+        this.beginPollingState();
 
-		this._player = document.getElementById('view-right-control');
+        this._initialized = true;
 
-		this._stateMonitorInterval = window.setInterval(function() {
-			self._monitorState();
-		}, 100);
+        return this;
+    };
 
-		this._playbackMonitorInterval = window.setInterval(function() {
-			self._monitorPlayback();
-		}, 1000);
+    ViewRightPlayer.prototype.beginPollingState = function() {
+        var self = this;
+        this._stateMonitorInterval = window.setInterval(function() {
+            self._monitorState();
+        }, 100);
 
-		this.onPositionChanged(0, 0);
+        this._playbackMonitorInterval = window.setInterval(function() {
+            self._monitorPlayback();
+        }, 1000);
+    };
 
-		this._initialized = true;
+    /**
+     * Appends the HTML template to a HTMLElement, given by ID or HTMLElement
+     *
+     * @method appendTemplate
+     * @param {HTMLElement} container Player container element or selector
+     * @return {HTMLElement} Reference to the new object (HTMLElement)
+     */
+    ViewRightPlayer.prototype.appendTemplate = function(container) {
+        var width = container.clientWidth,
+            height = container.clientHeight;
 
-		return this;
-	};
+        var tpl = '<object id="' + this._id + '"';
+
+        if (this._ie) {
+            tpl += ' classid="CLSID:059BFDA3-0AAB-419F-9F69-AF9BBE3A4668" ';
+        }
+        else {
+            tpl += ' type="application/x-viewright-m3u8" ';
+        }
+        tpl += ' width="' + width + '" height="' + height + '"></object>';
+
+        container.innerHTML += tpl;
+    };
 
 	/**
 	 * Destroys the player.
