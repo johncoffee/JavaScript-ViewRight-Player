@@ -21,6 +21,7 @@ window.ViewRightPlayer = (function() {
 		this._lastState = null;
 		this._lastPosition = 0;
 		this._debugLevel = (console && console.debug) ? "debug" : "log"; // we'd like to use console.debug if supported, otherwise we'll use console.log.
+        this._id = "view-right-control";
 	};
 
 	/**
