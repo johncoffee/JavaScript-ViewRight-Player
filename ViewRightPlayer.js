@@ -280,31 +280,32 @@ window.ViewRightPlayer = (function() {
 	 * @method destroy
 	 * @return {Boolean} Was destroying the player successful
 	 */
-	ViewRightPlayer.prototype.destroy = function() {
-		this.log('Destroying player');
+    ViewRightPlayer.prototype.destroy = function() {
+        this.log('Destroying player...');
 
-		if (!this._initialized) {
-			this.error('Unable to destroy Verimatrix player, not initialized');
-		}
+        if (!this._initialized) {
+            throw 'Unable to destroy Verimatrix player, not initialized';
+        }
 
-		window.clearInterval(this._stateMonitorInterval);
-		this._stateMonitorInterval = null;
+        this._initialized = false;
 
-		window.clearInterval(this._playbackMonitorInterval);
-		this._playbackMonitorInterval = null;
+        window.clearInterval(this._stateMonitorInterval);
+        window.clearInterval(this._playbackMonitorInterval);
 
-		var result = this._validateResponse(
-			this._player.UnLoad(),
-			'Destroying played failed'
-		);
-
-		var objectNode = document.getElementById("view-right-control");
-		objectNode.parentNode.removeChild(objectNode);
-		
-		this._initialized = false;
-
-		return result;
-	};
+        var success = this._validateResponse(
+            this._player.UnLoad(),
+            'Destroying played failed'
+        );
+        var objectNode = document.getElementById(this._id);
+        if (success && objectNode) {
+            objectNode.parentNode.removeChild(objectNode);
+            this.log('Destroyed.');
+        }
+        else {
+            this.log("did not remove object node");
+        }
+        return success;
+    };
 
 	/**
 	 * Returns whether the device is provisioned.
