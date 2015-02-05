@@ -20,8 +20,14 @@ window.ViewRightPlayer = (function() {
 		this._playbackMonitorInterval = null;
 		this._lastState = null;
 		this._lastPosition = 0;
-		this._debugLevel = (console && console.debug) ? "debug" : "log"; // we'd like to use console.debug if supported, otherwise we'll use console.log.
         this._id = "view-right-control";
+		this._debugLevel = (console && console.debug) ? "debug" : "log"; // we'd like to use console.debug if supported, otherwise we'll use console.log.
+        
+        Object.defineProperty(this, "_player", {
+            get: function() {
+                return document.getElementById( this._id );
+            }
+        });
 	};
 
 	/**
@@ -218,22 +224,21 @@ window.ViewRightPlayer = (function() {
 		return this._lastOpenedUrl;
 	};
 
-    /**
-     * Initializes the ViewRightPlayer.
-     *
-     * @method init
-     * @param {DOMElement} container Player container element or selector
-     * @return {Player} Self
-     */
-    ViewRightPlayer.prototype.init = function(container) {
-        this.log('Initializing player');
+	/**
+	 * Initializes the ViewRightPlayer.
+	 *
+	 * @method init
+	 * @param {DOMElement} container Player container element or selector
+	 * @return {Player} Self
+	 */
+	ViewRightPlayer.prototype.init = function(container) {
+		this.log('Initializing player');
 
         this.appendTemplate(container);
-        this._player = document.getElementById(this._id);
-
+        
         this.beginPollingState();
 
-        this._initialized = true;
+		this._initialized = true;
 
         return this;
     };
@@ -260,8 +265,33 @@ window.ViewRightPlayer = (function() {
         var width = container.clientWidth,
             height = container.clientHeight;
 
-        var tpl = '<object id="' + this._id + '"';
+		return this;
+	};
 
+    ViewRightPlayer.prototype.beginPollingState = function() {
+        var self = this;
+        this._stateMonitorInterval = window.setInterval(function() {
+            self._monitorState();
+        }, 100);
+
+        this._playbackMonitorInterval = window.setInterval(function() {
+            self._monitorPlayback();
+        }, 1000);
+    };
+
+    /**
+     * Appends the HTML template to a HTMLElement, given by ID or HTMLElement  
+     *
+     * @method appendTemplate
+     * @param {HTMLElement} container Player container element or selector
+     * @return {HTMLElement} Reference to the new object (HTMLElement)
+     */
+    ViewRightPlayer.prototype.appendTemplate = function(container) {
+        var width = container.clientWidth,
+            height = container.clientHeight;
+        
+        var tpl = '<object id="' + this._id + '"';
+        
         if (this._ie) {
             tpl += ' classid="CLSID:059BFDA3-0AAB-419F-9F69-AF9BBE3A4668" ';
         }
@@ -269,7 +299,7 @@ window.ViewRightPlayer = (function() {
             tpl += ' type="application/x-viewright-m3u8" ';
         }
         tpl += ' width="' + width + '" height="' + height + '"></object>';
-
+        
         container.innerHTML += tpl;
     };
 
