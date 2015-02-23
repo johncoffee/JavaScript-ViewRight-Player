@@ -11,7 +11,6 @@ window.ViewRightPlayer = (function() {
 	 */
 	var ViewRightPlayer = function() {
 		this._ie = /MSIE (\d+\.\d+);/.test(navigator.userAgent);
-		this._player = null;
 		this._initialized = false;
 		this._lastOpenedUrl = null;
 		this._lastResponseCode = null;
@@ -23,9 +22,13 @@ window.ViewRightPlayer = (function() {
         this._id = "view-right-control";
 		this._debugLevel = (console && console.debug) ? "debug" : "log"; // we'd like to use console.debug if supported, otherwise we'll use console.log.
         
+        // solves a problem where the reference to the player object is sometimes lost.
         Object.defineProperty(this, "_player", {
             get: function() {
                 return document.getElementById( this._id );
+            },
+            set: function() {
+                throw "You're not meant to set _player manually. You can get _player after running init.";    
             }
         });
 	};
@@ -322,13 +325,11 @@ window.ViewRightPlayer = (function() {
             'Destroying played failed'
         );
         var objectNode = document.getElementById(this._id);
-        if (success && objectNode) {
+        if (objectNode) {
             objectNode.parentNode.removeChild(objectNode);
             this.log('Destroyed.');
         }
-        else {
-            this.log("did not remove object node");
-        }
+
         return success;
     };
 
