@@ -242,18 +242,7 @@ window.ViewRightPlayer = (function() {
 
         return this;
     };
-
-    ViewRightPlayer.prototype.beginPollingState = function() {
-        var self = this;
-        this._stateMonitorInterval = window.setInterval(function() {
-            self._monitorState();
-        }, 100);
-
-        this._playbackMonitorInterval = window.setInterval(function() {
-            self._monitorPlayback();
-        }, 1000);
-    };
-
+    
     /**
      * Appends the HTML template to a HTMLElement, given by ID or HTMLElement
      *
@@ -268,6 +257,11 @@ window.ViewRightPlayer = (function() {
 		return this;
 	};
 
+    /**
+     * Initializes polling last state and playback position from plugin with hardcoded intervals
+     * 
+     * @method beginPollingState
+     */
     ViewRightPlayer.prototype.beginPollingState = function() {
         var self = this;
         this._stateMonitorInterval = window.setInterval(function() {
@@ -1020,7 +1014,7 @@ window.ViewRightPlayer = (function() {
 	 * @method registerBootServer
 	 * @param {String} bootServerURL
 	 * @param {String} bootServerID
-	 * @param {Boolean} boolVal 
+	 * @param {Boolean} I don't know what this is 
 	 */
 	ViewRightPlayer.prototype.registerBootServer = function(bootServerURL, bootServerID, boolVal) {
 		this._player.RegisterBootServer(bootServerURL, bootServerID, boolVal);
