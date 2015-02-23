@@ -1,0 +1,19 @@
+{
+  "name": "JavaScript-ViewRight-Player",
+  "version": "1.0.0",
+  "homepage": "https://github.com/johncoffee/JavaScript-ViewRight-Player",
+  "authors": [
+    "Julian <julian@studio42.dk>"
+  ],
+  "license": "N/A",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.3"
+  }
+}
