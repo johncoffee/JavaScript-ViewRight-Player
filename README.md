@@ -45,6 +45,7 @@ JavaScript wrapper library for the ViewRight player.
 * onStateChanged
 * open
 * pause
+* registerBootServer
 * resume
 * rewind
 * setBalance
